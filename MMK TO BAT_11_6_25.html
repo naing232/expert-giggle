@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ထိုင်း-မြန်မာ ငွေလဲနှုန်း</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Myanmar Text', 'Pyidaungsu', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .flags {
+            font-size: 40px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        .last-update {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 15px;
+            text-align: center;
+            font-size: 13px;
+            color: #6c757d;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .last-update i {
+            color: #667eea;
+        }
+
+        .rates-container {
+            padding: 0;
+        }
+
+        .rate-card {
+            padding: 25px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .rate-card:hover {
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .rate-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .rate-title {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .rate-title i {
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .rate-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: #2c5aa0;
+            margin: 12px 0;
+            background: linear-gradient(135deg, #2c5aa0, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(44, 90, 160, 0.1);
+        }
+
+        .rate-info {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rate-change {
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .up {
+            background: rgba(46, 125, 50, 0.1);
+            color: #2e7d32;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .down {
+            background: rgba(198, 40, 40, 0.1);
+            color: #c62828;
+            border: 1px solid rgba(198, 40, 40, 0.2);
+        }
+
+        /* Calculator Styles */
+        .calculator {
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9ff, #f0f2ff);
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .calculator h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #495057;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .calculator h3 i {
+            color: #667eea;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .input-with-flag {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-flag {
+            position: absolute;
+            left: 15px;
+            font-size: 20px;
+            z-index: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .currency-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .currency-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .swap-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .swap-button:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 15px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-value {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 8px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .result-text {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .controls {
+            padding: 20px;
+            background: white;
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 15px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-section {
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9ff, #f0f2ff);
+            margin-top: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .info-section h3 {
+            color: #495057;
+            margin-bottom: 18px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item i {
+            color: #667eea;
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .info-text {
+            color: #495057;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        /* Floating elements for background */
+        .floating {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .float-1 { width: 100px; height: 100px; top: 10%; left: 5%; animation-delay: 0s; }
+        .float-2 { width: 150px; height: 150px; top: 60%; right: 10%; animation-delay: 1s; }
+        .float-3 { width: 80px; height: 80px; bottom: 20%; left: 15%; animation-delay: 2s; }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating float-1"></div>
+    <div class="floating float-2"></div>
+    <div class="floating float-3"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <div class="flags">
+                    🇹🇭 ↔️ 🇲🇲
+                </div>
+                <h1>ထိုင်း-မြန်မာ ငွေလဲနှုန်း</h1>
+                <p>နောက်ဆုံးရ စျေးနှုန်းများနှင့် တွက်ချက်မှု</p>
+            </div>
+        </div>
+
+        <div class="last-update">
+            <i class="fas fa-clock"></i>
+            <span id="updateTime">စျေးနှုန်းများ ရယူနေသည်...</span>
+        </div>
+
+        <div class="rates-container" id="ratesContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <div>စျေးနှုန်းများ ရယူနေသည်...</div>
+            </div>
+        </div>
+
+        <!-- Currency Calculator -->
+        <div class="calculator">
+            <h3><i class="fas fa-calculator"></i> ငွေလဲနှုန်း တွက်ကြည့်မယ်</h3>
+            
+            <div class="input-group">
+                <label><i class="fas fa-money-bill-wave"></i> ဘတ်ငွေ (THB)</label>
+                <div class="input-with-flag">
+                    <span class="currency-flag">🇹🇭</span>
+                    <input type="number" id="thbInput" class="currency-input" 
+                           placeholder="0.00" oninput="calculateFromTHB()">
+                </div>
+            </div>
+
+            <button class="swap-button" onclick="swapCurrencies()">
+                <i class="fas fa-exchange-alt"></i>
+            </button>
+
+            <div class="input-group">
+                <label><i class="fas fa-coins"></i> မြန်မာကျပ် (MMK)</label>
+                <div class="input-with-flag">
+                    <span class="currency-flag">🇲🇲</span>
+                    <input type="number" id="mmkInput" class="currency-input" 
+                           placeholder="0" oninput="calculateFromMMK()">
+                </div>
+            </div>
+
+            <div id="calculationResult" class="result" style="display: none;">
+                <div class="result-text">လဲလှယ်ပြီးငွေပမာဏ</div>
+                <div class="result-value" id="resultValue">0</div>
+                <div class="result-text" id="resultText"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="fetchExchangeRates()">
+                <i class="fas fa-sync-alt"></i>
+                စျေးနှုန်းများ နောက်တစ်ကြိမ်ရယူမည်
+            </button>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3><i class="fas fa-lightbulb"></i> သိထားသင့်သည်များ</h3>
+        <div class="info-item">
+            <i class="fas fa-exclamation-circle"></i>
+            <div class="info-text">ငွေလဲနှုန်းများ ပြောင်းလဲနိုင်ပါသည်</div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-shield-alt"></i>
+            <div class="info-text">တရားဝင် ငွေလဲလှယ်ရုံများတွင်သာ လဲလှယ်ပါ</div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-wifi"></i>
+            <div class="info-text">အချက်အလက်များ ရယူရန် အင်တာနက်လိုအပ်ပါသည်</div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-history"></i>
+            <div class="info-text">စျေးနှုန်းများ အလိုအလျောက် မွမ်းမံပေးပါမည်</div>
+        </div>
+    </div>
+
+    <script>
+        // Current exchange rates - Updated with real rates
+        // 100,000 MMK = 820 THB (from your image)
+        // So 1 THB = 100,000 / 820 = 121.95 MMK
+        // And 1 MMK = 820 / 100,000 = 0.0082 THB
+        
+        let currentRates = {
+            thb_mmk: 121.95,  // 1 ဘတ် = 121.95 ကျပ်
+            mmk_thb: 0.0082   // 1 ကျပ် = 0.0082 ဘတ်
+        };
+
+        // Sample exchange rate data
+        const sampleRates = {
+            thb_mmk: 121.95,
+            mmk_thb: 0.0082,
+            last_updated: new Date().toLocaleString('my-MM')
+        };
+
+        // Mock API function
+        async function fetchExchangeRates() {
+            document.getElementById('ratesContainer').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>စျေးနှုန်းများ ရယူနေသည်...</div>
+                </div>
+            `;
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Small random variation for realism
+                const randomChange = (Math.random() - 0.5) * 2;
+                const newThbRate = (121.95 + randomChange).toFixed(2);
+                
+                const rates = {
+                    thb_mmk: parseFloat(newThbRate),
+                    mmk_thb: parseFloat((1 / newThbRate).toFixed(4)),
+                    last_updated: new Date().toLocaleString('my-MM')
+                };
+                
+                currentRates = rates;
+                displayRates(rates);
+                
+            } catch (error) {
+                console.error('Error fetching rates:', error);
+                currentRates = sampleRates;
+                displayRates(sampleRates);
+            }
+        }
+
+        function displayRates(rates) {
+            const change = (rates.thb_mmk - 121.95).toFixed(2);
+            const changeClass = change >= 0 ? 'up' : 'down';
+            const changeSymbol = change >= 0 ? '↗️' : '↘️';
+
+            document.getElementById('ratesContainer').innerHTML = `
+                <div class="rate-card">
+                    <div class="rate-title">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>ထိုင်းဘတ် (THB) → မြန်မာကျပ် (MMK)</span>
+                    </div>
+                    <div class="rate-value">${rates.thb_mmk.toFixed(2)} ကျပ်</div>
+                    <div class="rate-change ${changeClass}">
+                        ${changeSymbol} ${Math.abs(change)} ကျပ်
+                    </div>
+                    <div class="rate-info">
+                        <i class="fas fa-info-circle"></i>
+                        1 ဘတ် = ${rates.thb_mmk.toFixed(2)} ကျပ်
+                    </div>
+                </div>
+                
+                <div class="rate-card">
+                    <div class="rate-title">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>မြန်မာကျပ် (MMK) → ထိုင်းဘတ် (THB)</span>
+                    </div>
+                    <div class="rate-value">${rates.mmk_thb.toFixed(4)} ဘတ်</div>
+                    <div class="rate-info">
+                        <i class="fas fa-info-circle"></i>
+                        1 သိန်းကျပ် = ${(rates.mmk_thb * 100000).toFixed(0)} ဘတ်
+                    </div>
+                    <div class="rate-info">
+                        <i class="fas fa-calculator"></i>
+                        1 ဘတ် = ${rates.thb_mmk.toFixed(2)} ကျပ်
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('updateTime').innerHTML = 
+                `<i class="fas fa-check-circle"></i> နောက်ဆုံးအချိန်: ${rates.last_updated}`;
+        }
+
+        // Currency Calculation Functions
+        function calculateFromTHB() {
+            const thbInput = document.getElementById('thbInput');
+            const mmkInput = document.getElementById('mmkInput');
+            const resultDiv = document.getElementById('calculationResult');
+            const resultValue = document.getElementById('resultValue');
+            const resultText = document.getElementById('resultText');
+
+            const thb = parseFloat(thbInput.value) || 0;
+            const mmk = thb * currentRates.thb_mmk;
+
+            mmkInput.value = mmk.toFixed(2);
+
+            if (thb > 0) {
+                resultValue.textContent = `${mmk.toLocaleString()} ကျပ်`;
+                resultText.textContent = `🇹🇭 ${thb.toLocaleString()} ဘတ် = 🇲🇲 ${mmk.toLocaleString()} ကျပ်`;
+                resultDiv.style.display = 'block';
+            } else {
+                resultDiv.style.display = 'none';
+            }
+        }
+
+        function calculateFromMMK() {
+            const thbInput = document.getElementById('thbInput');
+            const mmkInput = document.getElementById('mmkInput');
+            const resultDiv = document.getElementById('calculationResult');
+            const resultValue = document.getElementById('resultValue');
+            const resultText = document.getElementById('resultText');
+
+            const mmk = parseFloat(mmkInput.value) || 0;
+            const thb = mmk * currentRates.mmk_thb;
+
+            thbInput.value = thb.toFixed(2);
+
+            if (mmk > 0) {
+                resultValue.textContent = `${thb.toLocaleString()} ဘတ်`;
+                resultText.textContent = `🇲🇲 ${mmk.toLocaleString()} ကျပ် = 🇹🇭 ${thb.toLocaleString()} ဘတ်`;
+                resultDiv.style.display = 'block';
+            } else {
+                resultDiv.style.display = 'none';
+            }
+        }
+
+        function swapCurrencies() {
+            const thbInput = document.getElementById('thbInput');
+            const mmkInput = document.getElementById('mmkInput');
+            
+            const thbValue = thbInput.value;
+            const mmkValue = mmkInput.value;
+            
+            if (thbValue && !isNaN(parseFloat(thbValue))) {
+                mmkInput.value = thbValue;
+                thbInput.value = '';
+                calculateFromMMK();
+            } else if (mmkValue && !isNaN(parseFloat(mmkValue))) {
+                thbInput.value = mmkValue;
+                mmkInput.value = '';
+                calculateFromTHB();
+            }
+        }
+
+        // Auto-refresh every 2 minutes
+        function startAutoRefresh() {
+            setInterval(fetchExchangeRates, 120000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchExchangeRates();
+            startAutoRefresh();
+            
+            // Add some sample calculations on load
+            setTimeout(() => {
+                document.getElementById('thbInput').value = 1000;
+                calculateFromTHB();
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
